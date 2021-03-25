@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QSystemTrayIcon>
+#include <QMediaPlayer>
 
 
 QT_BEGIN_NAMESPACE
@@ -20,12 +21,16 @@ public:
 
         void on_actionExit_triggered();
 
+        QMediaPlayer*player;
+
+        void playsound(QString test);
+
 private slots:
         void on_calendarWidget_selectionChanged();
 
-        void on_listAlmBtn_accepted();
+        void on_Volumeslider_sliderReleased();
 
-        void on_VolumeSlider_sliderReleased();
+        void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

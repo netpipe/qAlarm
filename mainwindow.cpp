@@ -7,6 +7,8 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QSound>
+#include <QFileDialog>
+#include <QBuffer>
 
 QString mediadir = "./media/"; //change mediadir2 in main.cpp aswell if needed
 
@@ -18,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     QPixmap oPixmap(32,32);
-    oPixmap.load ( mediadir + "qtimer.png");
+    oPixmap.load ( mediadir + "qtimer2.png");
 
     QIcon oIcon( oPixmap );
 
@@ -51,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     showTime();
 
-    QSound::play( mediadir + "phone.wav");
+   // QSound::play( mediadir + "phone.wav");
 
 
     QMessageBox msgBox;
@@ -63,7 +65,31 @@ MainWindow::MainWindow(QWidget *parent)
    // QTextStream out(&file);   // we will serialize the data into the file
    // out << QString("skipped")  + "," + currentDate + "," + QTime::currentTime().toString()+","+type+","+count+","+cost << endl;
    // file.close();
+
+ //   if( QFileInfo("settings.txt").exists())    {        on_actionOpenCoin_triggered();    }
+    player=new QMediaPlayer();
+    playsound("Resource/sounds/ec1_mono.ogg");
+
 }
+
+void MainWindow::playsound(QString test){
+    // player->setMedia(QUrl("qrc:/sounds/ec1_mono.ogg"));
+    // player->setMedia(QUrl::fromLocalFile("./paddle_hit.wav"));
+     //or play from memory
+      QFile file(test.toLatin1());
+      file.open(QIODevice::ReadOnly);
+      QByteArray* arr = new QByteArray(file.readAll());
+      file.close();
+      QBuffer* buffer = new QBuffer(arr);
+      buffer->open(QIODevice::ReadOnly);
+      buffer->seek(0);
+//qDebug() << "Media supported state -> " << QMediaPlayer::hasSupport("video/mp4"); // this gives a "1"
+      player->setVolume(10);
+ //    media->setMedia("sound.mp3");
+     player->setMedia(QMediaContent(), buffer);
+     player->play();
+}
+
 
 MainWindow::~MainWindow()
 {
@@ -131,47 +157,45 @@ void MainWindow::on_calendarWidget_selectionChanged()
    // ui->calendarWidget->
 }
 
-
-
-
-void MainWindow::on_listAlmBtn_accepted()
+void MainWindow::on_Volumeslider_sliderReleased()
 {
-    QString name;
-  //  name=this->GetTime().toString()+"  ";
-
-    /*
-    connect(ui->chkMon,SIGNAL(clicked(bool)),this,SLOT(ToggleMon(bool)));
-    connect(ui->chkTues,SIGNAL(clicked(bool)),this,SLOT(ToggleTue(bool)));
-    connect(ui->chkWed,SIGNAL(clicked(bool)),this,SLOT(ToggleWed(bool)));
-    connect(ui->chkThurs,SIGNAL(clicked(bool)),this,SLOT(ToggleThur(bool)));
-    connect(ui->chkFri,SIGNAL(clicked(bool)),this,SLOT(ToggleFri(bool)));
-    connect(ui->chkSat,SIGNAL(clicked(bool)),this,SLOT(ToggleSat(bool)));
-    connect(ui->chkSun,SIGNAL(clicked(bool)),this,SLOT(ToggleSun(bool)));
-
-    if(this->isMonEnabled())
-        name.append(" M");
-    if(this->isTueEnabled())
-        name.append(" T");
-    if(this->isWedEnabled())
-        name.append(" W");
-    if(this->isThurEnabled())
-        name.append(" Th");
-    if(this->isFriEnabled())
-        name.append(" F");
-    if(this->isSatEnabled())
-        name.append(" Sat");
-    if(this->isSunEnabled())
-        name.append(" Sun");
-    if(this->isCustomEnabled())
-        name.append("  "+this->_CustomAlarm.toString());
-
-    */
-
-
+    player->setVolume(1);
+    //save volume
 }
 
-void MainWindow::on_VolumeSlider_sliderReleased()
+void MainWindow::on_pushButton_clicked()
 {
- //   media->setVolume(Volume);
- //   FileIO::SaveVolume(Volume);
+   /*
+            ui->checkMon
+            ui->checkTuesday
+            ui->checkWensday
+            ui->checkThursday
+            ui->checkFriday
+            ui->checkSaturday
+            ui->checkSunday
+            ui->checkAll
+     */
+
+    QString daystr;
+
+    if       (    ui->checkMon->isChecked() )
+        daystr += "monday";
+    if       (    ui->checkTuesday->isChecked() )
+        daystr += "tuesday";
+    if       (    ui->checkWensday->isChecked() )
+        daystr += "wensday";
+    if       (    ui->checkThursday->isChecked() )
+        daystr += "thursday";
+    if       (    ui->checkFriday->isChecked() )
+        daystr += "friday";
+    if       (    ui->checkSaturday->isChecked() )
+        daystr += "saturday";
+    if       (    ui->checkSunday->isChecked() )
+        daystr += "sunday";
+    if       (    ui->checkAll->isChecked() )
+        daystr += "alldays";
+
+
+
+
 }
