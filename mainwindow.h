@@ -25,6 +25,9 @@ public:
 
         void playsound(QString test);
 
+        void fileActivation(QString test);
+
+
 private slots:
         void on_calendarWidget_selectionChanged();
 

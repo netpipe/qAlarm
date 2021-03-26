@@ -9,6 +9,7 @@
 #include <QSound>
 #include <QFileDialog>
 #include <QBuffer>
+#include <QProcess>
 
 QString mediadir = "./media/"; //change mediadir2 in main.cpp aswell if needed
 
@@ -66,11 +67,19 @@ MainWindow::MainWindow(QWidget *parent)
    // out << QString("skipped")  + "," + currentDate + "," + QTime::currentTime().toString()+","+type+","+count+","+cost << endl;
    // file.close();
 
- //   if( QFileInfo("settings.txt").exists())    {        on_actionOpenCoin_triggered();    }
-    player=new QMediaPlayer();
-    playsound("Resource/sounds/ec1_mono.ogg");
-
 }
+
+
+
+void MainWindow::fileActivation(QString test ){
+//   if( QFileInfo("settings.txt").exists())    {        on_actionOpenCoin_triggered();    }
+player=new QMediaPlayer();
+playsound("Resource/sounds/ec1_mono.ogg");
+
+//   QProcess::execute("xterm");
+QProcess::startDetached("xterm");//QStringList{file}
+}
+
 
 void MainWindow::playsound(QString test){
     // player->setMedia(QUrl("qrc:/sounds/ec1_mono.ogg"));
@@ -199,3 +208,4 @@ void MainWindow::on_pushButton_clicked()
 
 
 }
+
